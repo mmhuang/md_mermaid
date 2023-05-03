@@ -16,8 +16,12 @@ from markdown.preprocessors import Preprocessor
 import re
 import string
 
-def strip_notprintable(myStr):
-    return ''.join(filter(lambda x: x in string.printable, myStr))
+def strip_notprintable(line):
+    # Strip non-ASCII characters
+    line = re.sub(r'[\x00-\x1f\x7f-\x9f]', '', line)
+    # Strip non-printable characters
+    line = ''.join(filter(lambda x: x.isprintable(), line))
+    return line
 
 MermaidRegex = re.compile(r"^(?P<mermaid_sign>[\~\`]){3}[\ \t]*[Mm]ermaid[\ \t]*$")
 
